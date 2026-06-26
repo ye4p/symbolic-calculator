@@ -1,4 +1,7 @@
+import math
 from  src.classes.AlgebraicNode import AlgebraicNode, NodeType
+from src.lib.errors import UnknownMathFunctionCallError
+FUNCTIONS={"sin", "cos", "tan", "ln", "log", "sqrt", "abs", "exp"}
 
 # this will be used for sin, cos, ln, etc.
 class Function(AlgebraicNode):
@@ -18,5 +21,28 @@ class Function(AlgebraicNode):
         args = self.args.simplify()
         return Function(self.func, args)
     
+    def sub(self, value):
+        return Function(self.args.sub(value))
+    
+    def eval(self):
+        args = self.args.eval()
+        match self.func:
+            case "sin":
+                math.sin(args)
+            case "cos":
+                math.cos(args)
+            case "tan":
+                math.tan(args)
+            case "ln":
+                math.log(args)
+            case "log":
+                math.log10(args)
+            case "abs":
+                abs(args)
+            case _:
+                raise UnknownMathFunctionCallError(f"Unknown function: {self.func}")
+
+
+
     def sort_key(self):
-        return 0
+        return (5, self.func, [a.sort_key() for a in self.args])

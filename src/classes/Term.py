@@ -1,12 +1,13 @@
 from  src.classes.AlgebraicNode import AlgebraicNode, NodeType
+from src.classes.Fraction import Fraction
 
 class Term(AlgebraicNode): #Multiplication
     node_type=NodeType.TERM
     def __init__(self, factors):
-        # self.coefs = coefs     # is a LIST of AlgebraicNodes
-        self.factors = factors # is a LIST of AlgebraicNodes
+        self.factors = factors.flatten() # is a LIST of AlgebraicNodes
     def __repr__(self):
-        return f"Term({self.coefs}, {self.factors})"
+        # return f"Term({self.coefs}, {self.factors})"
+        return f"Term({self.factors})"
     
     def __eq__(self, other):
         term1 = self.normalize()
@@ -16,22 +17,10 @@ class Term(AlgebraicNode): #Multiplication
         for i, f in term1.factors:
             if term1.factors[i]!=term2.factors[i]: return False
         return True
-
     
-    def simplify_term(self):
-        if len(self.factors) == 1:
-            return self.factors[0].simplify()
-        factors = [f.simplify() for f in self.factors]
-        return Term(factors)
-    
-    def normalize_term(self):
-        # Flatten terms
-        flattened=self.flatten(self.factors)
-
-        # Sort terms
-        flattened.sort(key = lambda node: node.sort_key())
-
-        return Term(flattened)
+    def __neg__(self):
+        new_factors = [-el for el in self.factors]
+        return Term(new_factors)
 
     def flatten(self, list):
         flattened=[]
@@ -42,6 +31,46 @@ class Term(AlgebraicNode): #Multiplication
                 flattened.append(el)
         return flattened
     
+    def normalize(self):
+        # Flatten terms
+        flattened=self.flatten(self.factors)
+
+        # Normalize: 
+        normalized = [factor.normalize() for factor in flattened]
+
+        # Sort terms
+        normalized.sort(key = lambda node: node.sort_key())
+
+        return Term(normalized)
+
+
+    def simplify(self):
+        if len(self.factors) == 1:
+            return self.factors[0].simplify()
+        
+        simplified = [f.simplify() for f in self.factors]
+        filtered=[]
+
+        for f in simplified:
+            if f == Fraction(0):
+                return Fraction(0)
+            if f == Fraction(1):
+                continue
+            filtered.append(f)
+
+        return Term(filtered)
+
+    def sub(self, symbol, value):
+        list1 = [el.sub(symbol, value) for el in self.factors]
+        return Term(list1)
+    
+    def eval(self):
+        value = 1
+
+        for el in self.factors:
+            # print("result of el.eval() on each factor in term is : ", el.eval())
+            value*=el.eval()
+        return value
 
     def sort_key(self):
-        return (self.node_type, )
+        return (self.node_type, [f.sort_key() for f in self.factors] )

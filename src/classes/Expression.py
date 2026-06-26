@@ -1,13 +1,14 @@
 from  src.classes.AlgebraicNode import AlgebraicNode, NodeType
-
+from src.classes.Fraction import Fraction
 
 class Expression(AlgebraicNode): #Adding
     node_type=NodeType.EXPRESSION
     def __init__(self, terms):
         # self.consts = consts   # is a LIST of AlgebraicNodes
-        self.terms = terms     # is a LIST of AlgebraicNodes
+        self.terms = terms.flatten()     # is a LIST of AlgebraicNodes
     def __repr__(self):
-        return f"Expression({self.consts}, {self.terms})"
+        # return f"Expression({self.consts}, {self.terms})"
+        return f"Expression({self.terms})"
     
     def __eq__(self, other):
         expr1 = self.normalize()
@@ -17,28 +18,11 @@ class Expression(AlgebraicNode): #Adding
         for i, f in expr1.terms:
             if expr1.terms[i]!=expr2.terms[i]: return False
         return True
-
-    def simplify_expression(self):
-        if len(self.terms)==1:
-            return self.terms[0].simplify()
-        terms = [t.simplify() for t in self.terms]
-        return Expression(terms)
     
-    def normalize_expression(self):
-        # first polynomials with descending order of their power
-        # sort numerical values in descending order
-        # skip the rest for now
+    def __neg__(self):
+        new_terms = [-el for el in self.terms]
+        return Expression(new_terms)
 
-        # Flatten expression
-        flattened=self.flatten(self.terms)
-
-        # Sort:
-        flattened.sort(key = lambda node: node.sort_key())
-
-        return Expression(flattened)
-
-        
-    
     def flatten(self, list):
         flattened=[]
         for el in list:
@@ -47,7 +31,43 @@ class Expression(AlgebraicNode): #Adding
             else:
                 flattened.append(el)
         return flattened
+    
+    def normalize(self):
+        # Flatten expression
+        flattened=self.flatten(self.terms)
+
+        # Normalize:
+        normalized = [term.normalize() for term in flattened]
+
+        # Sort:
+        normalized.sort(key = lambda node: node.sort_key())
+
+        return Expression(normalized)
+    
+    def simplify(self):
+        if len(self.terms)==1:
+            return self.terms[0].simplify()
         
+        terms = [t.simplify() for t in filtered]
+        
+        filtered=[]
+        for t in terms:
+            if t == Fraction(0):
+                continue
+            filtered.append(t)
+
+        return Expression(filtered)
+    
+    def sub(self, symbol, value):
+        list1 = [el.sub(symbol, value) for el in self.terms]
+        return Expression(list1)
+    
+    def eval(self):
+        value = 0
+
+        for el in self.terms:
+            value+=el.eval()
+        return value
 
     def sort_key(self):
-        return (self.node_type, )
+        return (self.node_type, [t.sort_key() for t in self.terms] )

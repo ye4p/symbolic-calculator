@@ -80,12 +80,14 @@ class Parser:
             self.advance()
             right=self.parse_term()
             if op=="-":
-                left.append(Term([Fraction(-1)],[right])) #Terms can be nested inside of each other, so its fine
+                # left.append(Term([Fraction(-1)],[right])) #Terms can be nested inside of each other, so its fine
+                left.append(Term([Fraction(-1), right]))
             else:
                 left.append(right)
         if len(left)==1:
             return left[0]
-        return Expression([], left) #it is fine that const arr is empty, as it will be sorted out further
+        # return Expression([], left) #it is fine that const arr is empty, as it will be sorted out further
+        return Expression(left)
     
     #Parses terms(multiplication, division, even implicit)
     def parse_term(self):
@@ -107,7 +109,8 @@ class Parser:
                 factors.append(right)
             else: 
                 break
-        return Term([],factors) 
+        # return Term([],factors) 
+        return Term(factors)
     
     #Parses powers and exponents
     def parse_power(self):
@@ -122,7 +125,8 @@ class Parser:
     #The lowest level of parsing
     def parse_primary(self):
         if self.current_token.type=="NUMBER":
-            node=Fraction(self.current_token.value)
+            # node=Fraction(self.current_token.value)
+            node = Fraction(float(self.current_token.value))
             self.advance()
             return node
         if self.current_token.type=="IDENTIFIER":

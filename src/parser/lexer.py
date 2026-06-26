@@ -64,11 +64,13 @@ class Lexer:
             self.advance()
         return Token("IDENTIFIER", string)
     def error(self, message):
-        raise Exception(f"Lexer error ar position {self.pos}: {message}")
+        raise Exception(f"Lexer error at position {self.pos}: {message}")
     def get_next_token(self):
         while self.current_char() is not None:
             ch=self.current_char()
-            self.skip_whitespace()
+            if (ch==" "):
+                self.skip_whitespace()
+                continue
             if ch.isdigit() or ch==".":
                 return self.number()
             if ch.isalpha():
