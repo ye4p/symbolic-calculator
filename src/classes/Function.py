@@ -1,6 +1,8 @@
 import math
 from  src.classes.AlgebraicNode import AlgebraicNode, NodeType
+from src.classes.Fraction import Fraction
 from src.lib.errors import UnknownMathFunctionCallError
+
 FUNCTIONS={"sin", "cos", "tan", "ln", "log", "sqrt", "abs", "exp"}
 
 # this will be used for sin, cos, ln, etc.
@@ -19,10 +21,15 @@ class Function(AlgebraicNode):
     
     def simplify(self):
         args = self.args.simplify()
+        if not args.contains_symbol():
+            ev = args.eval_fraction_form()
+            if ev==Fraction(0) and self.func == "sin":
+                return Fraction(0)
+            # TODO add more
         return Function(self.func, args)
     
     def sub(self, value):
-        return Function(self.args.sub(value))
+        return Function(self.func, self.args.sub(value))
     
     def eval(self):
         args = self.args.eval()
@@ -42,7 +49,11 @@ class Function(AlgebraicNode):
             case _:
                 raise UnknownMathFunctionCallError(f"Unknown function: {self.func}")
 
-
+    def eval_fraction_form(self):
+        raise NotImplementedError
 
     def sort_key(self):
         return (5, self.func, [a.sort_key() for a in self.args])
+    
+    def contains_symbol(self):
+        return self.args.contains_symbol()

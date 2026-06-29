@@ -1,6 +1,9 @@
-from  src.classes.AlgebraicNode import AlgebraicNode, NodeType
+from src.classes.AlgebraicNode import AlgebraicNode, NodeType
+from src.classes.Expression import Expression
+from src.classes.Power import Power
+from src.classes.Term import Term
+from fractions import Fraction as PyFraction 
 import math
-from fractions import Fraction as PyFraction
 
 # One of the base datatypes
 class Fraction(AlgebraicNode):
@@ -17,21 +20,58 @@ class Fraction(AlgebraicNode):
     
     def __neg__(self):
         return Fraction(-1*self.num, self.den)
+    
+    def __add__(self, other):
+        if not other.contains_symbol():
+            evaluated = other.eval_fraction_form()
+            new_den = self.den * evaluated.den
+            num1 = self.num * evaluated.den
+            num2 = evaluated.num * self.den
+
+            return Fraction(num1 + num2, new_den).simplify_fraction()
+        return Expression(self, other).flatten()
+        
+    def __sub__(self, other):
+        return self + (-other)
+    
+    def __mul__(self, other):
+        if not other.contains_symbol():
+            ev = other.eval_fraction_form()
+            return Fraction(self.num*ev.num, self.den*ev.den).simplify_fraction()
+        return Term(self, other).flatten()
+    
+    def __truediv__(self, other):
+        if not other.contains_symbol():
+            ev = other.eval_fraction_form()
+            return Fraction(self.num * ev.den, self.den * ev.num)
+        return Term([self, Power(other, -1)]).flatten()
+
+    def __pow__(self, other):
+        if not other.contains_symbol():
+            ev = other.eval_fraction_form()
+            if ev.den == 1:
+                return Fraction(self.num ** ev.num, self.den ** ev.num)
+            if (self.num ** ev.den).is_integer() and (self.den ** ev.den).is_integer():
+                return Fraction(self.num ** (ev.num/ev.den), self.den ** (ev.num/ev.den))
+        return Power(self, other)
 
     def normalize(self):
         return self
-    # def simplify_fraction(self):
-    #     num = int(self.num)
-    #     den = int(self.den)
-    #     gcd = math.gcd(num, den)
-    #     num//=gcd
-    #     den//=gcd
-    #     x = Fraction(self.num,)
+    
+    def simplify_fraction(self):
+        num = int(self.num)
+        den = int(self.den)
+        gcd = math.gcd(num, den)
+        num//=gcd
+        den//=gcd
 
-    #     return Fraction(str(num), str(den))
+        if den < 0:
+            den = -den
+            num = -num
+        return Fraction(num, den)
 
     def simplify(self):
-        return self
+        return self.simplify_fraction()
 
     def sub(self, symbol, value):
         return self
@@ -40,7 +80,13 @@ class Fraction(AlgebraicNode):
         # print("result of fraction eval is: ", self.num / self.den)
         return self.num / self.den
     
+    def eval_fraction_form(self):
+        return self.simplify_fraction()
+    
     
     def sort_key(self):
         return (self.node_type, self.num/self.den)
+    
+    def contains_symbol(self):
+        return False
     

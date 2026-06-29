@@ -31,7 +31,7 @@ class Expression(AlgebraicNode): #Adding
             else:
                 flattened.append(el)
         return flattened
-    
+
     def normalize(self):
         # Flatten expression
         flattened=self.flatten(self.terms)
@@ -47,8 +47,10 @@ class Expression(AlgebraicNode): #Adding
     def simplify(self):
         if len(self.terms)==1:
             return self.terms[0].simplify()
-        
-        terms = [t.simplify() for t in filtered]
+
+        normalized = self.terms.normalize()
+
+        terms = [t.simplify() for t in normalized]
         
         filtered=[]
         for t in terms:
@@ -56,7 +58,22 @@ class Expression(AlgebraicNode): #Adding
                 continue
             filtered.append(t)
 
-        return Expression(filtered)
+        # need to find common factors etc, such as 2x + 3x make it into 5x
+        # 
+        seen = []
+        
+
+        final = seen
+
+        if len(final) == 1:
+            return final[0]
+        return Expression(final)
+    
+    def find_index(self, list, factor):
+        for i, el in enumerate(list):
+            if el.is_equal(factor):
+                return 1
+        return -1
     
     def sub(self, symbol, value):
         list1 = [el.sub(symbol, value) for el in self.terms]
@@ -69,5 +86,19 @@ class Expression(AlgebraicNode): #Adding
             value+=el.eval()
         return value
 
+    def eval_fraction_form(self):
+        value = Fraction(0)
+
+        for el in self.terms:
+            value+=el.eval_fraction_form()
+        return value
+
+
     def sort_key(self):
         return (self.node_type, [t.sort_key() for t in self.terms] )
+    
+    def contains_symbol(self):
+        for el in self.terms:
+            if el.contains_symbol():
+                return True
+        return False

@@ -48,7 +48,9 @@ class Term(AlgebraicNode): #Multiplication
         if len(self.factors) == 1:
             return self.factors[0].simplify()
         
-        simplified = [f.simplify() for f in self.factors]
+        normalized = self.factors.normalize()
+
+        simplified = [f.simplify() for f in normalized]
         filtered=[]
 
         for f in simplified:
@@ -58,7 +60,23 @@ class Term(AlgebraicNode): #Multiplication
                 continue
             filtered.append(f)
 
-        return Term(filtered)
+        seen = []
+        multiplier= Fraction(1)
+        for f in filtered:
+            if f.contains_symbol():
+                seen.append(f)
+                continue
+            else:
+                multiplier*=f
+        if multiplier != Fraction(1):
+            seen.append(multiplier)
+
+
+        final = seen
+        
+        if len(final) == 1:
+            return final[0]
+        return Term(final)
 
     def sub(self, symbol, value):
         list1 = [el.sub(symbol, value) for el in self.factors]
@@ -71,6 +89,20 @@ class Term(AlgebraicNode): #Multiplication
             # print("result of el.eval() on each factor in term is : ", el.eval())
             value*=el.eval()
         return value
+    
+    def eval_fraction_form(self):
+        value = Fraction(1)
+
+        for el in self.factors:
+            value *= el.eval_fraction_form()
+
+        return value
 
     def sort_key(self):
         return (self.node_type, [f.sort_key() for f in self.factors] )
+    
+    def contains_symbol(self):
+        for el in self.factors:
+            if el.contains_symbol():
+                return True
+        return False

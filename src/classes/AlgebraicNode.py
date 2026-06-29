@@ -2,6 +2,7 @@ from enum import IntEnum
 from src.classes.Expression import Expression
 from src.classes.Term import Term
 from src.classes.Power import Power
+from src.classes.Fraction import Fraction
 
 class AlgebraicNode:
     def __init__(self):
@@ -40,16 +41,22 @@ class AlgebraicNode:
     def sub(self, symbol: str, value):
         pass # substitutes all occurences of certain symbol into the value
     
-    def eval(self):
+    def eval(self) -> float:
         pass # evaluates expression considering that there are no symbols
-
-    def is_equal(self):
-        pass
     
-    def flatten(list):
+    def eval_fraction_form(self) -> Fraction:
+        pass # evaluates expression into fraction form to keep precision
+
+    def is_equal(self, other):
+        return self == other # for now its fine but later will need to change
+    
+    def flatten(self, list):
         pass
     
     def sort_key(self):
+        pass
+
+    def contains_symbol(self) -> bool:
         pass
 
 

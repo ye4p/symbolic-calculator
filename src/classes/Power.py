@@ -23,10 +23,25 @@ class Power(AlgebraicNode):
         base = self.base.simplify()
         exp = self.exp.simplify()
         
-        if exp==0:
+        if exp==Fraction(0):
             return Fraction(1)
-        if exp==1:
+        elif exp==Fraction(1):
             return base
+        elif base==Fraction(1):
+            return Fraction(1)
+        elif base==Fraction(0):
+            return Fraction(0)
+        elif not base.contains_symbol() and not exp.contains_symbol():
+            base_frac = base.eval_fraction_form()
+            exp_frac = exp.eval_fraction_form()
+            return base_frac ** exp_frac
+        elif isinstance(base, Power):
+            return Power(base.base, base.exp * exp)
+        # elif isinstance(base, Term):
+        #     new = []
+        #     for el in base.factors:
+        #         new.append(Power(el, exp))
+        #     return (Term(new))
         else:
             return Power(base, exp)
         
@@ -36,6 +51,13 @@ class Power(AlgebraicNode):
     def eval(self):
         val = self.base.eval() ** self.exp.eval()
         return val
+    
+    def eval_fraction_form(self):
+        val = self.base.eval_fraction_form() ** self.exp.eval_fraction_form()
+        return val
 
     def sort_key(self):
         return (self.node_type, self.base.sort_key(), self.exp.sort_key())
+    
+    def contains_symbol(self):
+        return self.base.contains_symbol() or self.exp.contains_symbol()

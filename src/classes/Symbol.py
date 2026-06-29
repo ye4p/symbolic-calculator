@@ -32,5 +32,11 @@ class Symbol(AlgebraicNode):  # for variables
     def eval(self):
         raise EvaluatingSymbolError(f"Can't evaluate symbol {self.name}")
 
+    def eval_fraction_form(self):
+        return EvaluatingSymbolError(f"Can't evaluate symbol {self.name}")
+
     def sort_key(self):
         return (self.node_type, self.name)
+    
+    def contains_symbol(self):
+        return True
