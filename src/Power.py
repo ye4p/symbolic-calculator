@@ -1,6 +1,6 @@
-from  src.classes.AlgebraicNode import AlgebraicNode, NodeType
-from src.classes.Fraction import Fraction
-from src.classes.Term import Term
+from  src.AlgebraicNode import AlgebraicNode, NodeType
+from src.Fraction import Fraction
+from src.Term import Term
 
 class Power(AlgebraicNode):
     node_type=NodeType.POWER

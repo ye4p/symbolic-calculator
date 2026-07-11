@@ -1,7 +1,7 @@
 import math
-from  src.classes.AlgebraicNode import AlgebraicNode, NodeType
-from src.classes.Fraction import Fraction
-from src.lib.errors import UnknownMathFunctionCallError
+from  src.AlgebraicNode import AlgebraicNode, NodeType
+from src.Fraction import Fraction
+from lib.errors import UnknownMathFunctionCallError
 
 FUNCTIONS={"sin", "cos", "tan", "ln", "log", "sqrt", "abs", "exp"}
 

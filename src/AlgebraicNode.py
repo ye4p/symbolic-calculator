@@ -1,8 +1,8 @@
 from enum import IntEnum 
-from src.classes.Expression import Expression
-from src.classes.Term import Term
-from src.classes.Power import Power
-from src.classes.Fraction import Fraction
+from src.Expression import Expression
+from src.Term import Term
+from src.Power import Power
+from src.Fraction import Fraction
 
 class AlgebraicNode:
     def __init__(self):

@@ -1,7 +1,7 @@
-from  src.classes.AlgebraicNode import AlgebraicNode, NodeType
-from src.classes.Fraction import Fraction
-from src.lib.errors import EvaluatingSymbolError
-from src.classes.Term import Term
+from  src.AlgebraicNode import AlgebraicNode, NodeType
+from src.Fraction import Fraction
+from lib.errors import EvaluatingSymbolError
+from src.Term import Term
 
 # one of the base data types 
 class Symbol(AlgebraicNode):  # for variables

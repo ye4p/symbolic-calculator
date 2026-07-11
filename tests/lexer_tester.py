@@ -1,4 +1,5 @@
-from src.parser.lexer import Lexer
+from parser.lexer import Lexer
+
 #expr="2sin(pi/2)+3.5x-log(10)"
 expr="x_1"
 lexer= Lexer(expr)

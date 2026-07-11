@@ -1,7 +1,7 @@
-from src.classes.AlgebraicNode import AlgebraicNode, NodeType
-from src.classes.Expression import Expression
-from src.classes.Power import Power
-from src.classes.Term import Term
+from src.AlgebraicNode import AlgebraicNode, NodeType
+from src.Expression import Expression
+from src.Power import Power
+from src.Term import Term
 from fractions import Fraction as PyFraction 
 import math
 

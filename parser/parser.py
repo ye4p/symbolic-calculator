@@ -1,12 +1,12 @@
 #Recursive descent parser
-from src.parser.token import Token
-from src.classes.AlgebraicNode import AlgebraicNode
-from src.classes.Expression import Expression 
-from src.classes.Term import Term
-from src.classes.Power import Power
-from src.classes.Function import Function
-from src.classes.Symbol import Symbol 
-from src.classes.Fraction import Fraction
+from parser.token import Token
+from src.AlgebraicNode import AlgebraicNode
+from src.Expression import Expression 
+from src.Term import Term
+from src.Power import Power
+from src.Function import Function
+from src.Symbol import Symbol 
+from src.Fraction import Fraction
 
 # Example: in (x-3)/2, the object that containts every other object would be Term
 # 2(x+3)+1, the ojbect that containts everything else would be Expression, creating Abstract syntax tree

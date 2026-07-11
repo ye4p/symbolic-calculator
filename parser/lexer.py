@@ -1,4 +1,4 @@
-from src.parser.token import Token
+from parser.token import Token
 
 #Here the tokenizer will split the string into the stuff, like FUNCTION, OPERATOR, NUMBER etc.
 FUNCTIONS={"sin", "cos", "tan", "ln", "log", "sqrt", "abs", "exp"}

@@ -1,5 +1,5 @@
-from  src.classes.AlgebraicNode import AlgebraicNode, NodeType
-from src.classes.Fraction import Fraction
+from  src.AlgebraicNode import AlgebraicNode, NodeType
+from src.Fraction import Fraction
 
 class Expression(AlgebraicNode): #Adding
     node_type=NodeType.EXPRESSION
