@@ -6,6 +6,7 @@ class Expression(AlgebraicNode): #Adding
     def __init__(self, terms):
         # self.consts = consts   # is a LIST of AlgebraicNodes
         self.terms = terms.flatten()     # is a LIST of AlgebraicNodes
+        #probably shouldn't flatten by default but I might need to figure that out. For example, if expression is (x+y)+z I shouldn't change it into x+y+z right away
     def __repr__(self):
         # return f"Expression({self.consts}, {self.terms})"
         return f"Expression({self.terms})"
