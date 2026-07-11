@@ -1,0 +1,1 @@
+* Start working on a tests to make sure things always work as they are intended do, such as simplification, equal functions always stays consistent(assert in python)
