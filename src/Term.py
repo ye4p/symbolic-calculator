@@ -1,10 +1,11 @@
-from src.AlgebraicNode import AlgebraicNode, NodeType
-from src.Fraction import Fraction
+from .AlgebraicNode import AlgebraicNode
+from .NodeType import NodeType
 
 class Term(AlgebraicNode): #Multiplication
     node_type=NodeType.TERM
     def __init__(self, factors):
-        self.factors = factors.flatten() # is a LIST of AlgebraicNodes
+        # self.factors = factors.flatten() # is a LIST of AlgebraicNodes
+        self.factors = factors
     def __repr__(self):
         # return f"Term({self.coefs}, {self.factors})"
         return f"Term({self.factors})"
@@ -45,6 +46,7 @@ class Term(AlgebraicNode): #Multiplication
 
 
     def simplify(self):
+        from .Fraction import Fraction
         if len(self.factors) == 1:
             return self.factors[0].simplify()
         
@@ -91,6 +93,7 @@ class Term(AlgebraicNode): #Multiplication
         return value
     
     def eval_fraction_form(self):
+        from .Fraction import Fraction
         value = Fraction(1)
 
         for el in self.factors:

@@ -1,9 +1,3 @@
-from enum import IntEnum 
-from src.Expression import Expression
-from src.Term import Term
-from src.Power import Power
-from src.Fraction import Fraction
-
 class AlgebraicNode:
     def __init__(self):
         pass
@@ -18,18 +12,23 @@ class AlgebraicNode:
         return hash(repr(self))
 
     def __add__(self, other):
-        return Expression(self, other)
+        from .Expression import Expression
+        return Expression([self, other])
     
     def __sub__(self, other):
-        return Expression(self, -other)
+        from .Expression import Expression
+        return Expression([self, -other])
     
     def __mul__(self, other):
+        from .Term import Term
         return Term(self, other)
     
     def __pow__(self, other):
+        from .Power import Power
         return Power(self, other)
 
     def __truediv__(self, other):
+        from .Power import Power
         return Power(self, -other)
 
     def normalize(self):
@@ -59,11 +58,3 @@ class AlgebraicNode:
     def contains_symbol(self) -> bool:
         pass
 
-
-class NodeType(IntEnum):
-    SYMBOL=0
-    FRACTION=1
-    POWER=2
-    TERM=3
-    EXPRESSION=4
-    FUNCTION=5

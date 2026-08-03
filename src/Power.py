@@ -1,6 +1,6 @@
-from  src.AlgebraicNode import AlgebraicNode, NodeType
-from src.Fraction import Fraction
-from src.Term import Term
+from .AlgebraicNode import AlgebraicNode
+from .NodeType import NodeType
+from .Term import Term
 
 class Power(AlgebraicNode):
     node_type=NodeType.POWER
@@ -20,6 +20,7 @@ class Power(AlgebraicNode):
         return Power(self.base.normalize(), self.exp.normalize())
 
     def simplify(self):
+        from .Fraction import Fraction
         base = self.base.simplify()
         exp = self.exp.simplify()
         

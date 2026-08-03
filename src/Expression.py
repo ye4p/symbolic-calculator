@@ -1,12 +1,13 @@
-from  src.AlgebraicNode import AlgebraicNode, NodeType
-from src.Fraction import Fraction
+from .AlgebraicNode import AlgebraicNode
+from .NodeType import NodeType
 
 class Expression(AlgebraicNode): #Adding
     node_type=NodeType.EXPRESSION
     def __init__(self, terms):
         # self.consts = consts   # is a LIST of AlgebraicNodes
-        self.terms = terms.flatten()     # is a LIST of AlgebraicNodes
-        #probably shouldn't flatten by default but I might need to figure that out. For example, if expression is (x+y)+z I shouldn't change it into x+y+z right away
+        # self.terms = terms.flatten()     # is a LIST of AlgebraicNodes
+        self.terms = terms
+    
     def __repr__(self):
         # return f"Expression({self.consts}, {self.terms})"
         return f"Expression({self.terms})"
@@ -46,6 +47,7 @@ class Expression(AlgebraicNode): #Adding
         return Expression(normalized)
     
     def simplify(self):
+        from .Fraction import Fraction
         if len(self.terms)==1:
             return self.terms[0].simplify()
 
@@ -88,6 +90,7 @@ class Expression(AlgebraicNode): #Adding
         return value
 
     def eval_fraction_form(self):
+        from .Fraction import Fraction
         value = Fraction(0)
 
         for el in self.terms:
@@ -103,3 +106,7 @@ class Expression(AlgebraicNode): #Adding
             if el.contains_symbol():
                 return True
         return False
+
+    def pretty(self):
+        string = """
+        """

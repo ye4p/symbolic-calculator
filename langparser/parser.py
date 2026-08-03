@@ -1,5 +1,5 @@
 #Recursive descent parser
-from parser.token import Token
+from .token import Token
 from src.AlgebraicNode import AlgebraicNode
 from src.Expression import Expression 
 from src.Term import Term

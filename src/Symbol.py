@@ -1,7 +1,6 @@
-from  src.AlgebraicNode import AlgebraicNode, NodeType
-from src.Fraction import Fraction
+from .AlgebraicNode import AlgebraicNode
+from .NodeType import NodeType
 from lib.errors import EvaluatingSymbolError
-from src.Term import Term
 
 # one of the base data types 
 class Symbol(AlgebraicNode):  # for variables
@@ -15,6 +14,8 @@ class Symbol(AlgebraicNode):  # for variables
         return self.name == other.name
     
     def __neg__(self):
+        from .Fraction import Fraction
+        from .Term import Term
         return Term([Fraction(-1), self])
 
     def normalize(self):
@@ -24,6 +25,7 @@ class Symbol(AlgebraicNode):  # for variables
         return self
     
     def sub(self, symbol, value):
+        from .Fraction import Fraction
         if (symbol == self.name):
             return Fraction(value)
         else:

@@ -1,7 +1,5 @@
-from src.AlgebraicNode import AlgebraicNode, NodeType
-from src.Expression import Expression
-from src.Power import Power
-from src.Term import Term
+from .AlgebraicNode import AlgebraicNode
+from .NodeType import NodeType
 from fractions import Fraction as PyFraction 
 import math
 
@@ -22,6 +20,7 @@ class Fraction(AlgebraicNode):
         return Fraction(-1*self.num, self.den)
     
     def __add__(self, other):
+        from .Expression import Expression
         if not other.contains_symbol():
             evaluated = other.eval_fraction_form()
             new_den = self.den * evaluated.den
@@ -35,18 +34,22 @@ class Fraction(AlgebraicNode):
         return self + (-other)
     
     def __mul__(self, other):
+        from .Term import Term
         if not other.contains_symbol():
             ev = other.eval_fraction_form()
             return Fraction(self.num*ev.num, self.den*ev.den).simplify_fraction()
         return Term(self, other).flatten()
     
     def __truediv__(self, other):
+        from .Power import Power
+        from .Term import Term
         if not other.contains_symbol():
             ev = other.eval_fraction_form()
             return Fraction(self.num * ev.den, self.den * ev.num)
         return Term([self, Power(other, -1)]).flatten()
 
     def __pow__(self, other):
+        from .Power import Power
         if not other.contains_symbol():
             ev = other.eval_fraction_form()
             if ev.den == 1:

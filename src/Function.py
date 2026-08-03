@@ -1,7 +1,7 @@
-import math
-from  src.AlgebraicNode import AlgebraicNode, NodeType
-from src.Fraction import Fraction
+from .AlgebraicNode import AlgebraicNode
+from .NodeType import NodeType
 from lib.errors import UnknownMathFunctionCallError
+import math
 
 FUNCTIONS={"sin", "cos", "tan", "ln", "log", "sqrt", "abs", "exp"}
 
@@ -20,6 +20,7 @@ class Function(AlgebraicNode):
         return self.func == other.func and expr1 == expr2
     
     def simplify(self):
+        from .Fraction import Fraction
         args = self.args.simplify()
         if not args.contains_symbol():
             ev = args.eval_fraction_form()
