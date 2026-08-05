@@ -1,5 +1,6 @@
 from .AlgebraicNode import AlgebraicNode
 from .NodeType import NodeType
+import langconfig
 
 class Expression(AlgebraicNode): #Adding
     node_type=NodeType.EXPRESSION
@@ -107,6 +108,9 @@ class Expression(AlgebraicNode): #Adding
                 return True
         return False
 
-    def pretty(self):
-        string = """
-        """
+    def pretty(self, level: int = 0, comma: bool = False):
+        print(level * langconfig.INDENTATION * " " + "Expression([")
+        for term in self.terms[:-1]:
+            term.pretty(level + 1, True)
+        self.terms[-1].pretty(level+1)
+        print(level * langconfig.INDENTATION * " "+"])" + ("," if comma else ""))

@@ -43,7 +43,7 @@ class AlgebraicNode:
     def eval(self) -> float:
         pass # evaluates expression considering that there are no symbols
     
-    def eval_fraction_form(self) -> Fraction:
+    def eval_fraction_form(self):
         pass # evaluates expression into fraction form to keep precision
 
     def is_equal(self, other):
@@ -58,3 +58,5 @@ class AlgebraicNode:
     def contains_symbol(self) -> bool:
         pass
 
+    def pretty(self, level: int = 0, comma: bool = False): # It isn't the prettiest but will do for now
+        pass        

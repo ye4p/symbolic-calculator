@@ -110,15 +110,18 @@ class Parser:
             else: 
                 break
         # return Term([],factors) 
+        if len(factors)==1:
+            return factors[0]
         return Term(factors)
     
     #Parses powers and exponents
     def parse_power(self):
         base=self.parse_primary()
-        while self.pos+1<len(self.tokens) and self.tokens[self.pos+1].value=="^":
+        while (self.pos)<len(self.tokens) and self.tokens[self.pos].value=="^":
             self.advance()
-            self.advance()
+            # self.advance()
             exp=self.parse_power()
+            # exp = self.parse_expression()
             base=Power(base, exp)
         return base
     

@@ -1,6 +1,7 @@
 from .AlgebraicNode import AlgebraicNode
 from .NodeType import NodeType
 from .Term import Term
+import langconfig
 
 class Power(AlgebraicNode):
     node_type=NodeType.POWER
@@ -62,3 +63,9 @@ class Power(AlgebraicNode):
     
     def contains_symbol(self):
         return self.base.contains_symbol() or self.exp.contains_symbol()
+
+    def pretty(self, level: int = 0, comma: bool = False):
+        print(level * langconfig.INDENTATION * " " + "Power(")
+        self.base.pretty(level+1, True)
+        self.exp.pretty(level+1)
+        print(level * langconfig.INDENTATION * " "+")" + ("," if comma else ""))

@@ -5,4 +5,5 @@ lexer= Lexer(expr)
 tokens=lexer.tokenize()
 parser=Parser(tokens)
 result=parser.parse()
-print(result)
+
+result.pretty()

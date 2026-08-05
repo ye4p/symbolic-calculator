@@ -1,6 +1,7 @@
 from .AlgebraicNode import AlgebraicNode
 from .NodeType import NodeType
 from lib.errors import EvaluatingSymbolError
+import langconfig
 
 # one of the base data types 
 class Symbol(AlgebraicNode):  # for variables
@@ -42,3 +43,6 @@ class Symbol(AlgebraicNode):  # for variables
     
     def contains_symbol(self):
         return True
+
+    def pretty(self, level: int = 0, comma: bool = False):
+        print(level * langconfig.INDENTATION * " " + f"Symbol( '{self.name}' )" + ("," if comma else ""))

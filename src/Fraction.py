@@ -2,6 +2,7 @@ from .AlgebraicNode import AlgebraicNode
 from .NodeType import NodeType
 from fractions import Fraction as PyFraction 
 import math
+import langconfig
 
 # One of the base datatypes
 class Fraction(AlgebraicNode):
@@ -92,4 +93,7 @@ class Fraction(AlgebraicNode):
     
     def contains_symbol(self):
         return False
+
+    def pretty(self, level: int = 0, comma: bool = False):
+        print(level * langconfig.INDENTATION * " " + f"Fraction({self.num}, {self.den})" + ("," if comma else ""))
     

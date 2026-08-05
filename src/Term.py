@@ -1,5 +1,6 @@
 from .AlgebraicNode import AlgebraicNode
 from .NodeType import NodeType
+import langconfig
 
 class Term(AlgebraicNode): #Multiplication
     node_type=NodeType.TERM
@@ -109,3 +110,10 @@ class Term(AlgebraicNode): #Multiplication
             if el.contains_symbol():
                 return True
         return False
+
+    def pretty(self, level: int = 0, comma: bool = False):
+        print(level * langconfig.INDENTATION * " " + "Term([")
+        for factor in self.factors[:-1]:
+            factor.pretty(level + 1, True)
+        self.factors[-1].pretty(level + 1)
+        print(level * langconfig.INDENTATION * " "+"])" + ("," if comma else ""))

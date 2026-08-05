@@ -2,6 +2,7 @@ from .AlgebraicNode import AlgebraicNode
 from .NodeType import NodeType
 from lib.errors import UnknownMathFunctionCallError
 import math
+import langconfig
 
 FUNCTIONS={"sin", "cos", "tan", "ln", "log", "sqrt", "abs", "exp"}
 
@@ -54,7 +55,14 @@ class Function(AlgebraicNode):
         raise NotImplementedError
 
     def sort_key(self):
-        return (5, self.func, [a.sort_key() for a in self.args])
+        return (self.node_type, self.func, [a.sort_key() for a in self.args])
     
     def contains_symbol(self):
         return self.args.contains_symbol()
+    
+    def pretty(self, level: int = 0, comma: bool = False):
+        print(level * langconfig.INDENTATION * " " + "Function " + self.func + " ([")
+        for arg in self.args[:-1]:
+            arg.pretty(level + 1, True)
+        self.args[-1].pretty(level+1)
+        print(level * langconfig.INDENTATION * " "+"])" + ("," if comma else ""))

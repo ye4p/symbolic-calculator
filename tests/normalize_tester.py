@@ -1,5 +1,4 @@
-from langparser.parser import Parser
-from langparser.lexer import Lexer
+from langparser.parser import Parser, Lexer
 
 ex1="3.5x"
 ex2="37x + x*2"

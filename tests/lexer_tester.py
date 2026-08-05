@@ -1,7 +1,7 @@
-from parser.lexer import Lexer
+from langparser import Lexer
 
-#expr="2sin(pi/2)+3.5x-log(10)"
-expr="x_1"
+expr="2sin(pi/2)+3.5x-log(10)"
+
 lexer= Lexer(expr)
 tokens=lexer.tokenize()
 for token in tokens:
