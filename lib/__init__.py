@@ -1,3 +1,3 @@
-from .errors import EvaluatingSymbolError, UnknownMathFunctionCallError
+from .errors import EvaluatingSymbolError, UnknownMathFunctionCallError, NotAlgebraicNodeClassType
 
 print("Importing error classes...")

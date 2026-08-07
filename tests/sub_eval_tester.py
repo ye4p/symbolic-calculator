@@ -1,4 +1,4 @@
-from langparser import Parser, Lexer, process
+from langparser import process
 
 test_cases = [ "2 + x", "8x", "3^x", "3"]
 answers = [4, 16, 9, 3]

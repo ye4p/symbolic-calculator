@@ -39,13 +39,22 @@ class Expression(AlgebraicNode): #Adding
         # Flatten expression
         flattened=self.flatten(self.terms)
 
+        print(f"Before flattening: {self.terms}")
+
+        self.type_check(flattened)
+
         # Normalize:
-        normalized = [term.normalize() for term in flattened]
+        normalized_terms = [term.normalize() for term in flattened]
+
+        print(f"Before flattening: {self.terms}")
+        print(f"after flattening: {flattened}")
+        print(f"after normalizing: {normalized_terms}")
+        self.type_check(normalized_terms)
 
         # Sort:
-        normalized.sort(key = lambda node: node.sort_key())
+        normalized_terms.sort(key = lambda node: node.sort_key())
 
-        return Expression(normalized)
+        return Expression(normalized_terms)
     
     def simplify(self):
         from .Fraction import Fraction

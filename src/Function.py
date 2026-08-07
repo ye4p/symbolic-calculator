@@ -19,6 +19,9 @@ class Function(AlgebraicNode):
         expr1 = self.args.normalize()
         expr2 = other.args.normalize()
         return self.func == other.func and expr1 == expr2
+
+    def normalize(self):
+        return Function(self.func, [ el.normalize() for el in self.args])
     
     def simplify(self):
         from .Fraction import Fraction

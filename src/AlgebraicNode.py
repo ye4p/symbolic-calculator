@@ -1,3 +1,5 @@
+from lib import NotAlgebraicNodeClassType
+
 class AlgebraicNode:
     def __init__(self):
         pass
@@ -60,3 +62,11 @@ class AlgebraicNode:
 
     def pretty(self, level: int = 0, comma: bool = False): # It isn't the prettiest but will do for now
         pass        
+
+    def type_check(self, arr: list[AlgebraicNode]) -> None:
+        for i, el in enumerate(arr):
+            if el is None:
+                raise NotAlgebraicNodeClassType(f"Found None in the list at index {i}, the list is: {arr}")
+            if not isinstance(el, AlgebraicNode):
+                raise NotAlgebraicNodeClassType(f"Found object of type {type(el)} at index {i}, the list is: {arr}")
+        

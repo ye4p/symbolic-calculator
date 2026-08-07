@@ -6,3 +6,7 @@ class EvaluatingSymbolError(Exception):
 class UnknownMathFunctionCallError(Exception):
     """Raised when trying to call function that hasn't been added"""
     pass
+
+class NotAlgebraicNodeClassType(Exception):
+    """Raised if encountered None, int or some other object that isn't child of an AlgebraNode class"""
+    pass
