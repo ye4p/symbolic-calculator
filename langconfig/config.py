@@ -1,1 +1,2 @@
 INDENTATION = 3
+DEBUG = True

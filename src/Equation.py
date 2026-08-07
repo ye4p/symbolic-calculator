@@ -1,4 +1,5 @@
 from .AlgebraicNode import AlgebraicNode
 
 class Equation(AlgebraicNode):
-    pass
+    def __init__(self, exprs):
+        self.exprs=exprs

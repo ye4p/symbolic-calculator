@@ -16,29 +16,34 @@ class Term(AlgebraicNode): #Multiplication
         term2 = other.normalize()
         if (len(term1.factors) != len(term2.factors)):
             return False
-        for i, f in term1.factors:
-            if term1.factors[i]!=term2.factors[i]: return False
+        for i, f in enumerate(term1.factors):
+            if term1.factors[i]!=term2.factors[i]:
+                return False
         return True
     
     def __neg__(self):
         new_factors = [-el for el in self.factors]
         return Term(new_factors)
 
-    def flatten(self, list):
+    def flatten(self):
+        flattened=self.flatten_helper(self.factors)
+        return Term(flattened)
+
+    def flatten_helper(self, list):
         flattened=[]
         for el in list:
             if el.node_type==self.node_type:
-                flattened+=self.flatten(el.factors)
+                flattened+=self.flatten_helper(el.factors)
             else:
                 flattened.append(el)
         return flattened
     
     def normalize(self):
         # Flatten terms
-        flattened=self.flatten(self.factors)
+        flattened=self.flatten()
 
         # Normalize: 
-        normalized = [factor.normalize() for factor in flattened]
+        normalized = [factor.normalize() for factor in flattened.factors]
 
         # Sort terms
         normalized.sort(key = lambda node: node.sort_key())

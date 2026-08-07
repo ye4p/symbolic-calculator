@@ -11,7 +11,7 @@ class Symbol(AlgebraicNode):  # for variables
     def __repr__(self):
         return f"Symbol({self.name})"
     
-    def __eq___(self, other):
+    def __eq__(self, other):
         return self.name == other.name
     
     def __neg__(self):

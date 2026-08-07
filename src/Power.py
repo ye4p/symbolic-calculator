@@ -12,7 +12,7 @@ class Power(AlgebraicNode):
         return f"Power({self.base}, {self.exp})"
     
     def __eq__(self, other):
-        return self.base == other.base and self.exp == other.exp
+        return self.base.normalize() == other.base.normalize() and self.exp.normalize() == other.exp.normalize()
 
     def __neg__(self):
         return Term([-1, Power(self.base, self.exp)])

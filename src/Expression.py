@@ -18,38 +18,45 @@ class Expression(AlgebraicNode): #Adding
         expr2 = other.normalize()
         if (len(expr1.terms) != len(expr2.terms)):
             return False
-        for i, f in expr1.terms:
-            if expr1.terms[i]!=expr2.terms[i]: return False
+        for i, f in enumerate(expr1.terms):
+            if expr1.terms[i]!=expr2.terms[i]: 
+                if langconfig.DEBUG:
+                    print(f"Not equals: {expr1.terms[i]} and {expr2.terms[i]} at index {i}")
+                    print(f"Result of comparison is: {expr1.terms[i]==expr2.terms[i]}")
+
+                return False
         return True
     
     def __neg__(self):
         new_terms = [-el for el in self.terms]
         return Expression(new_terms)
 
-    def flatten(self, list):
+    def flatten(self):
+        flattened=self.flatten_helper(self.terms)
+        return Expression(flattened)
+
+    def flatten_helper(self, list):
         flattened=[]
         for el in list:
             if el.node_type==self.node_type:
-                flattened+=self.flatten(el.terms)
+                flattened+=self.flatten_helper(el.terms)
             else:
                 flattened.append(el)
         return flattened
 
     def normalize(self):
         # Flatten expression
-        flattened=self.flatten(self.terms)
+        flattened=self.flatten()
 
-        print(f"Before flattening: {self.terms}")
-
-        self.type_check(flattened)
+        if langconfig.DEBUG:
+            self.type_check(flattened.terms)
 
         # Normalize:
-        normalized_terms = [term.normalize() for term in flattened]
+        normalized_terms = [term.normalize() for term in flattened.terms]
 
-        print(f"Before flattening: {self.terms}")
-        print(f"after flattening: {flattened}")
-        print(f"after normalizing: {normalized_terms}")
-        self.type_check(normalized_terms)
+        if langconfig.DEBUG:
+            self.type_check(normalized_terms)
+
 
         # Sort:
         normalized_terms.sort(key = lambda node: node.sort_key())
@@ -82,7 +89,7 @@ class Expression(AlgebraicNode): #Adding
             return final[0]
         return Expression(final)
     
-    def find_index(self, list, factor):
+    def find_index(self, list, factor): # What is this ??
         for i, el in enumerate(list):
             if el.is_equal(factor):
                 return 1

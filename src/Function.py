@@ -16,9 +16,15 @@ class Function(AlgebraicNode):
         return f"FunctionCall({self.func}, {self.args})"
     
     def __eq__(self, other):
-        expr1 = self.args.normalize()
-        expr2 = other.args.normalize()
-        return self.func == other.func and expr1 == expr2
+        expr1 = [arg.normalize() for arg in self.args]
+        expr2 = [arg.normalize() for arg in other.args]
+
+        if self.func != other.func: return False
+
+        for i, arg in enumerate(expr1):
+            if expr1[i] != expr2[i]:
+                return False
+        return True
 
     def normalize(self):
         return Function(self.func, [ el.normalize() for el in self.args])
@@ -61,7 +67,10 @@ class Function(AlgebraicNode):
         return (self.node_type, self.func, [a.sort_key() for a in self.args])
     
     def contains_symbol(self):
-        return self.args.contains_symbol()
+        for arg in self.args:
+            if arg.contains_symbol():
+                return True
+        return False
     
     def pretty(self, level: int = 0, comma: bool = False):
         print(level * langconfig.INDENTATION * " " + "Function " + self.func + " ([")
