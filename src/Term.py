@@ -59,6 +59,14 @@ class Term(AlgebraicNode): #Multiplication
         normalized = self.factors.normalize()
 
         simplified = [f.simplify() for f in normalized]
+        
+        distributed = []
+
+        for f in simplified:
+            if not isinstance(f, Expression):
+                distributed.append(f)
+        
+
         filtered=[]
 
         for f in simplified:
