@@ -63,7 +63,7 @@ class AlgebraicNode:
     def pretty(self, level: int = 0, comma: bool = False): # It isn't the prettiest but will do for now
         pass        
 
-    def type_check(self, arr: list[AlgebraicNode]) -> None:
+    def type_check(self, arr) -> None:
         for i, el in enumerate(arr):
             if el is None:
                 raise NotAlgebraicNodeClassType(f"Found None in the list at index {i}, the list is: {arr}")
